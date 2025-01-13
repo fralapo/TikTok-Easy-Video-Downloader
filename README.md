@@ -63,7 +63,7 @@ pip install -r requirements.txt
 
 To access TikTok content, you'll need to export cookies from a logged-in browser session.
 
-1. Install the [Get cookies.txt LOCALLY]([https://chrome.google.com/webstore/detail/get-cookiestxt/bgaddhkoddajcdgocldbbfleckgcbcid](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)) extension for Chrome.
+1. Install the [Get cookies.txt LOCALLY](https://chromewebstore.google.com/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc)) extension for Chrome.
 2. Log in to your TikTok account using Chrome.
 3. Navigate to a TikTok video.
 4. Use the extension to export cookies as `cookies.txt`.
