@@ -77,22 +77,22 @@ To access TikTok content, you'll need to export cookies from a logged-in browser
 
 Basic download:
 ```bash
-python tik_tok_downloader.py https://www.tiktok.com/@username/video/1234567890
+python tik_tok_downloader.py https://www.tiktok.com/@username/video/1234567890 --cookies cookies.txt
 ```
 
 Use video descriptions as filenames:
 ```bash
-python tik_tok_downloader.py https://www.tiktok.com/@username/video/1234567890 --use-description
+python tik_tok_downloader.py https://www.tiktok.com/@username/video/1234567890 --use-description --cookies cookies.txt
 ```
 
 Set custom output directory:
 ```bash
-python tik_tok_downloader.py https://www.tiktok.com/@username/video/1234567890 --output my_videos
+python tik_tok_downloader.py https://www.tiktok.com/@username/video/1234567890 --output my_videos --cookies cookies.txt
 ```
 
 Download multiple videos from a file:
 ```bash
-python tik_tok_downloader.py --file links.txt
+python tik_tok_downloader.py --file links.txt --cookies cookies.txt
 ```
 
 ### Graphical User Interface (GUI)
