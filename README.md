@@ -120,6 +120,37 @@ python tiktok_gui.py
 | `--use-description`, `-d` | Use video description as filename       | False            |
 
 ---
+### 📥 How to Easily Retrieve Multiple TikTok Video Links from a Profile
+
+To avoid manually copying video links one by one from a TikTok profile, follow these steps to extract all visible video links efficiently using the **Link Grabber** Chrome extension.
+
+#### 1. Install the Chrome Extension
+- Go to the [Link Grabber extension page](https://chromewebstore.google.com/detail/link-grabber/caodelkhipncidmoebgbbeemedohcdma).
+- Click **Add to Chrome** to install the extension in your browser.
+
+#### 2. Navigate to the TikTok Profile
+- Open the TikTok profile from which you want to download videos.
+- Scroll down the page to load the videos you want to retrieve. Keep scrolling until all desired videos are visible on the page.
+  > **Note:** The extension only captures links that are currently visible on the page, so ensure all videos you need are loaded.
+
+#### 3. Use Link Grabber to Extract Links
+- Click on the **Link Grabber** extension icon in your Chrome toolbar.
+- The extension will generate a list of all links found on the current page.
+
+#### 4. Filter Links to Include Only Videos
+- In the **Link Grabber** interface, use the search/filter field to filter links by typing `/video/`. 
+  - This ensures that only TikTok video links are shown in the list.
+
+#### 5. Copy the Filtered Links
+- Once filtered, click the **Copy** button to copy the list of video links to your clipboard.
+
+#### 6. Save the Links for Download
+- Paste the copied links into a text file (e.g., `links.txt`) or directly into the downloader tool for batch downloading.
+
+---
+
+With this method, you can efficiently retrieve multiple TikTok video links from a profile without tedious manual copying, saving time and effort.
+---
 
 ## 🤝 Contributing
 
