@@ -17,7 +17,6 @@ A streamlined Python utility for downloading TikTok videos, designed with user c
 - 🎯 Option to use video descriptions as filenames.
 - 🗂️ Automatic directory creation and organization.
 - 🌐 Cookie integration for enhanced compatibility.
-- 📝 In-depth logging for process monitoring.
 
 ---
 
