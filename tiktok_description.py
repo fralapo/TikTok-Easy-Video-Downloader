@@ -6,6 +6,7 @@ import time
 import os
 import platform
 import sys
+from chromedriver_manager import ensure_compatible_chromedriver
 
 def get_chromedriver_path():
     """
@@ -54,6 +55,9 @@ def get_tiktok_description_with_cookies(url, cookie_file):
     """
     Get TikTok video description using Selenium and cookies
     """
+    # Ensure we have a compatible ChromeDriver
+    ensure_compatible_chromedriver()
+    
     # Configure Selenium with Chrome
     options = Options()
     options.add_argument("--headless")  # Headless mode
@@ -61,10 +65,19 @@ def get_tiktok_description_with_cookies(url, cookie_file):
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
+    # Add flags to suppress WebGL errors
+    options.add_argument("--enable-unsafe-swiftshader")
+    options.add_argument("--ignore-gpu-blocklist")
+    options.add_argument("--disable-software-rasterizer")
+    options.add_argument("--disable-webgl")
+    options.add_argument("--disable-webgl2")
+    options.add_argument("--log-level=3")  # Suppress console logging
+    options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
     
     try:
         driver_path = get_chromedriver_path()
         if not os.path.exists(driver_path):
+            print("ChromeDriver not found at path:", driver_path)
             return None
         
         service = Service(driver_path)
@@ -75,17 +88,64 @@ def get_tiktok_description_with_cookies(url, cookie_file):
         load_cookies_from_file(driver, cookie_file, "https://www.tiktok.com")
 
         # Navigate to the video
+        print(f"Navigating to {url} to extract description")
         driver.get(url)
-        time.sleep(5)  # Wait for page to load
+        time.sleep(8)  # Increased wait time for page to load
 
-        # Find the description element
-        try:
-            h1_element = driver.find_element(By.CSS_SELECTOR, "h1[data-e2e='browse-video-desc']")
-            description = h1_element.text
-            return description
-        except Exception:
-            return None
-    except Exception:
+        # Try multiple selectors to find the description element
+        selectors = [
+            "h1[data-e2e='browse-video-desc']",  # Original selector
+            "div[data-e2e='browse-video-desc']",  # Alternative selector
+            "div.tiktok-1ejylhp-DivContainer.e11995xo0 span",  # Another possible selector
+            ".video-meta-caption",  # Another possible selector
+            ".tiktok-1wrhn5c-SpanText",  # Another possible selector
+            "div[class*='desc'] span",  # Generic selector targeting description classes
+            "div[class*='caption'] span"  # Generic selector targeting caption classes
+        ]
+        
+        description = None
+        for selector in selectors:
+            try:
+                print(f"Trying selector: {selector}")
+                elements = driver.find_elements(By.CSS_SELECTOR, selector)
+                if elements:
+                    for element in elements:
+                        text = element.text.strip()
+                        if text and len(text) > 5:  # Ensure we have meaningful text
+                            print(f"Found description with selector {selector}: {text[:30]}...")
+                            description = text
+                            break
+                if description:
+                    break
+            except Exception as e:
+                print(f"Error with selector {selector}: {str(e)}")
+                continue
+        
+        # If no description found with selectors, try getting page source and extracting
+        if not description:
+            try:
+                print("Trying to extract from page source")
+                page_source = driver.page_source
+                # Look for common patterns in the HTML that might contain the description
+                import re
+                desc_patterns = [
+                    r'"desc":"([^"]+)"',
+                    r'"description":"([^"]+)"',
+                    r'"caption":"([^"]+)"'
+                ]
+                
+                for pattern in desc_patterns:
+                    matches = re.findall(pattern, page_source)
+                    if matches:
+                        description = matches[0]
+                        print(f"Found description in page source: {description[:30]}...")
+                        break
+            except Exception as e:
+                print(f"Error extracting from page source: {str(e)}")
+        
+        return description
+    except Exception as e:
+        print(f"Error in get_tiktok_description_with_cookies: {str(e)}")
         return None
     finally:
         if 'driver' in locals():
