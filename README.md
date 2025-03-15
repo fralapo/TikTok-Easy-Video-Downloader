@@ -43,7 +43,17 @@ cd TikTok-Easy-Video-Downloader
 pip install -r requirements.txt
 ```
 
-### Step 3: Set Up ChromeDriver
+### Step 3: ChromeDriver Setup
+The application now features automatic ChromeDriver detection and compatibility:
+
+- **Automatic Detection**: The system automatically detects your installed Chrome version.
+- **Compatible Download**: If a matching ChromeDriver isn't found, it will be downloaded automatically.
+- **Cross-Platform Support**: Works on Windows, macOS (Intel and Apple Silicon), and Linux.
+
+No manual ChromeDriver download is required! The system handles everything for you.
+
+If this does not work:
+
 1. Download the appropriate ChromeDriver version from [ChromeDriver](https://googlechromelabs.github.io/chrome-for-testing/#stable).
 2. Place the executable in the `chromedriver` directory:
    ```
@@ -105,6 +115,8 @@ python tiktok_gui.py
 - Customizable output directory.
 - Toggle to use video descriptions for filenames.
 - Real-time progress updates.
+- Stop download button to interrupt the download process.
+- Improved description extraction that works with the latest TikTok interface.
 
 ### Command Line Options
 
