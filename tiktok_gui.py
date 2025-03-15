@@ -87,7 +87,11 @@ class TikTokDownloaderGUI:
         
         # Download button
         self.download_btn = tk.Button(button_frame, text="Start Download", command=self.start_download)
-        self.download_btn.pack(side=tk.LEFT)
+        self.download_btn.pack(side=tk.LEFT, padx=(0, 10))
+        
+        # Stop button
+        self.stop_btn = tk.Button(button_frame, text="Stop Download", command=self.stop_download, state=tk.DISABLED)
+        self.stop_btn.pack(side=tk.LEFT)
         
         # Progress frame
         progress_frame = tk.LabelFrame(main_frame, text="Progress", padx=10, pady=10)
@@ -171,10 +175,12 @@ class TikTokDownloaderGUI:
     def download_thread(self, links: List[str]):
         self.running = True
         self.download_btn.config(state=tk.DISABLED)
+        self.stop_btn.config(state=tk.NORMAL)
         
         total = len(links)
         for i, link in enumerate(links):
             if not self.running:
+                self.update_progress("Download process stopped by user.")
                 break
                 
             self.update_progress(f"Downloading {i+1}/{total}: {link}")
@@ -187,9 +193,12 @@ class TikTokDownloaderGUI:
             except Exception as e:
                 self.update_progress(f"Error: {str(e)}")
                 
-        self.update_progress("Download process completed!")
+        if self.running:
+            self.update_progress("Download process completed!")
+        
         self.running = False
         self.download_btn.config(state=tk.NORMAL)
+        self.stop_btn.config(state=tk.DISABLED)
         
     def start_download(self):
         if self.running:
@@ -205,6 +214,13 @@ class TikTokDownloaderGUI:
             return
             
         threading.Thread(target=self.download_thread, args=(links,), daemon=True).start()
+        
+    def stop_download(self):
+        """Stop the download process"""
+        if self.running:
+            self.running = False
+            self.update_progress("Stopping download process... Please wait for current download to complete.")
+            self.stop_btn.config(state=tk.DISABLED)
 
 if __name__ == "__main__":
     root = tk.Tk()
